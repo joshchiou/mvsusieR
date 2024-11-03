@@ -61,8 +61,10 @@ mvsusie_rss <- function(Z, R, N, Bhat, Shat, varY,
 
   # Check input N.
   if (!missing(N)) {
-    if (N <= 1) {
-      stop("N must be greater than 1")
+  	if (!is.matrix(N)) {
+      if (N <= 1) {
+        stop("N must be greater than 1")
+	  }
     }
   }
 
@@ -105,7 +107,11 @@ mvsusie_rss <- function(Z, R, N, Bhat, Shat, varY,
   }
 
   if (!is.null(dim(Z)) && ncol(Z) > 1 && is_numeric_prior) {
-    stop("Please specify prior variance for the multivariate z-scores")
+    if (ncol(Z) == length(prior_variance)) {
+	  warning("Using fixed prior variance")
+	} else {
+      stop("Please specify prior variance for the multivariate z-scores")
+	}
   }
 
   is_numeric_matrix(R, "R")
